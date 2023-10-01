@@ -2,8 +2,11 @@
 #include "stack.h"
 
 #define num_vertices 4
+#define MAX_INT 5e10
 
 int adjacency_matrix_a[50][50];
+int final_matrix[50][50];
+int visited_nodes[500];
 
 /*******************
  * Function Signatures
@@ -77,5 +80,34 @@ void print_matrix(int matrix[50][50]) {
             printf("%c ", matrix[i][j]);
         }
         printf("\n");
+    }
+}
+
+void dijkstra(int start, int end){
+    final_matrix[0][start-'A'] = 0; // path from start to start = 0
+
+    for(int i = 0; i < num_vertices; i++){
+        if(i != start-'A') final_matrix[0][i] = MAX_INT; // Start the other nodes with inf
+    }
+
+    int current = start - 'A';
+    int final_matrix_line_atu = 1;
+    visited_nodes[start] = 1;
+
+    int sh_path = MAX_INT;
+
+    for(int i = current; i < num_vertices; i++){
+        for(int j = 0; j < num_vertices; j++){
+            if(adjacency_matrix_a[i][j] != 0){
+                final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j];
+                if(sh_path > final_matrix[final_matrix_line_atu][j]){
+                    sh_path = j;
+                }              
+            }
+        }
+
+        visited_nodes[sh_path + 'A'] = 1;
+        current = sh_path;
+        final_matrix_line_atu++;
     }
 }

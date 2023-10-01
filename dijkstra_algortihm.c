@@ -6,7 +6,7 @@ Authors:
 
 */
 
-#include "djisktra/djikstra.h"
+#include "djisktra/dijkstra.h"
 
 int main() {
     FILE *file_a;
@@ -24,6 +24,8 @@ int main() {
     read_file_create_graph(&graph_a, file_a);
 
     print_matrix(adjacency_matrix_a);
+
+    dijkstra('A', 'D');
 
     fclose(file_a);
 
