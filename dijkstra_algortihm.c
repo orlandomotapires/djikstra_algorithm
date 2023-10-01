@@ -27,6 +27,8 @@ int main() {
 
     dijkstra('A', 'D');
 
+    printf("\nFinal matrix: \n");
+    print_matrix(final_matrix);
     fclose(file_a);
 
     return 0;

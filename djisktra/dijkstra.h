@@ -2,11 +2,12 @@
 #include "stack.h"
 
 #define num_vertices 4
-#define MAX_INT 5e10
+#define MAX_INT 5000
 
 int adjacency_matrix_a[50][50];
 int final_matrix[50][50];
-int visited_nodes[500];
+int closed_nodes[500];
+int num_closed_nodes = 0;
 
 /*******************
  * Function Signatures
@@ -83,31 +84,44 @@ void print_matrix(int matrix[50][50]) {
     }
 }
 
-void dijkstra(int start, int end){
+bool dijkstra(int start, int end){
+
+    memset(final_matrix, 0, sizeof(final_matrix));
     final_matrix[0][start-'A'] = 0; // path from start to start = 0
 
     for(int i = 0; i < num_vertices; i++){
-        if(i != start-'A') final_matrix[0][i] = MAX_INT; // Start the other nodes with inf
+        if(i != start-'A') final_matrix[0][i] = MAX_INT; // Start the other nodes with MAX_INT
     }
 
     int current = start - 'A';
-    int final_matrix_line_atu = 1;
-    visited_nodes[start] = 1;
-
-    int sh_path = MAX_INT;
+    int final_matrix_line_atu = 1; // starts at the second line
+    closed_nodes[start] = 1; // close the start
 
     for(int i = current; i < num_vertices; i++){
+
+        int sh_path = MAX_INT;
         for(int j = 0; j < num_vertices; j++){
             if(adjacency_matrix_a[i][j] != 0){
-                final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j];
-                if(sh_path > final_matrix[final_matrix_line_atu][j]){
-                    sh_path = j;
-                }              
+                if(closed_nodes['A' + j] == 0){
+                    final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j];
+
+                    if(sh_path > final_matrix[final_matrix_line_atu][j]) sh_path = j;
+                    
+                }else{
+                    final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; // repeat the last value
+                }          
             }
         }
 
-        visited_nodes[sh_path + 'A'] = 1;
-        current = sh_path;
+        num_closed_nodes++;
+        closed_nodes[sh_path + 'A'] = 1; // close the shortest
+        current = sh_path; // goes for the shortest
+
+        if(current + 'A' == end) return 1;
+        else if(num_closed_nodes == num_vertices) return 0;
+
         final_matrix_line_atu++;
     }
+
+    return 0;
 }
