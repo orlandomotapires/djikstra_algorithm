@@ -10,34 +10,6 @@ int closed_nodes[500];
 int num_closed_nodes = 0;
 
 /*******************
- * Function Signatures
- *******************/
-
-/* 
-   Function: read_file_create_graph
-   Description: Reads a file and creates a graph based on its contents.
-
-   Parameters:
-   - graph: Pointer to a pointer to a Graph structure.
-   - file: Pointer to the file to be read.
-   - graph_num: An integer indicating which graph (a or b) is being processed.
-
-   Returns: void
-*/
-void read_file_create_graph(Graph **graph, FILE *file);
-
-/* 
-   Function: print_matrix
-   Description: Prints a 2D matrix.
-
-   Parameters:
-   - matrix: A 2D matrix to be printed.
-
-   Returns: void
-*/
-void print_matrix(int matrix[50][50]);
-
-/*******************
  * Function Implementations
 *******************/
 
@@ -84,9 +56,11 @@ void print_matrix(int matrix[50][50]) {
     }
 }
 
-bool dijkstra(int start, int end){
+int dijkstra(int start, int end){
 
     memset(final_matrix, 0, sizeof(final_matrix));
+    memset(closed_nodes, 0, sizeof(closed_nodes));
+    
     final_matrix[0][start-'A'] = 0; // path from start to start = 0
 
     for(int i = 0; i < num_vertices; i++){
