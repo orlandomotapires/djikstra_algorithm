@@ -9,6 +9,7 @@
 typedef struct Node {
     struct Graph* pointed_letter;
     struct Node* adjacency_list;
+    int weight;
 } Node;
 
 typedef struct Graph {
@@ -19,147 +20,6 @@ typedef struct Graph {
 Graph* initialize_graph() {
     return NULL;
 }
-
-/*******************
- * Function Signatures
- *******************/
-
-/* 
-   Function: initialize_graph
-   Description: Initializes an empty graph.
-
-   Returns: Graph* (Pointer to an empty Graph structure)
-*/
-Graph* initialize_graph();
-
-/* 
-   Function: is_graph_empty
-   Description: Checks if a graph is empty.
-
-   Parameters:
-   - list: Pointer to the graph to be checked.
-
-   Returns: int (1 if the graph is empty, 0 otherwise)
-*/
-int is_graph_empty(Graph* list);
-
-/* 
-   Function: is_node_list_empty
-   Description: Checks if a node list is empty.
-
-   Parameters:
-   - list: Pointer to the node list to be checked.
-
-   Returns: int (1 if the node list is empty, 0 otherwise)
-*/
-int is_node_list_empty(Node* list);
-
-/* 
-   Function: allocate_graph
-   Description: Allocates memory for a graph vertex.
-
-   Returns: Graph* (Pointer to the allocated Graph structure)
-*/
-Graph* allocate_graph();
-
-/* 
-   Function: allocate_node
-   Description: Allocates memory for a node in the adjacency list.
-
-   Returns: Node* (Pointer to the allocated Node structure)
-*/
-Node* allocate_node();
-
-/* 
-   Function: insert_main_list
-   Description: Inserts a vertex into the main list of vertices.
-
-   Parameters:
-   - l: Pointer to a pointer to the main list.
-   - e: Character representing the vertex to be inserted.
-
-   Returns: int (1 if the insertion is successful, 0 otherwise)
-*/
-int insert_main_list(Graph** l, char e);
-
-/* 
-   Function: find_vertex
-   Description: Finds a vertex in the main list by its position.
-
-   Parameters:
-   - list: Pointer to the main list of vertices.
-   - i: Position of the vertex to be found.
-
-   Returns: Graph* (Pointer to the found vertex or NULL if not found)
-*/
-Graph* find_vertex(Graph* list, int i);
-
-/* 
-   Function: vertex_degree
-   Description: Calculates the degree of a vertex.
-
-   Parameters:
-   - list: Pointer to the adjacency list of the vertex.
-
-   Returns: int (The degree of the vertex)
-*/
-int vertex_degree(Node* list);
-
-/* 
-   Function: main_list_size
-   Description: Calculates the size of the main list of vertices.
-
-   Parameters:
-   - complete_list: Pointer to the complete list of vertices.
-
-   Returns: int (The size of the main list)
-*/
-int main_list_size(Graph* complete_list);
-
-/* 
-   Function: get_all_degrees
-   Description: Gets an array of all vertex degrees.
-
-   Parameters:
-   - complete_list: Pointer to the complete list of vertices.
-
-   Returns: int* (Pointer to an array of vertex degrees)
-*/
-int* get_all_degrees(Graph* complete_list);
-
-/* 
-   Function: insert_at_end_adj_list
-   Description: Inserts a vertex at the end of the adjacency list.
-
-   Parameters:
-   - l: Pointer to a pointer to the adjacency list.
-   - e: Pointer to the vertex to be inserted.
-
-   Returns: int (1 if the insertion is successful, 0 otherwise)
-*/
-int insert_at_end_adj_list(Node** l, Graph** e);
-
-/* 
-   Function: print_node
-   Description: Prints a node's adjacency list.
-
-   Parameters:
-   - list: Pointer to the node's adjacency list.
-
-   Returns: void
-*/
-void print_node(Node* list);
-
-/* 
-   Function: print_complete_graph
-   Description: Prints the complete graph.
-
-   Parameters:
-   - complete_list: Pointer to the complete list of vertices.
-
-   Returns: void
-*/
-void print_complete_graph(Graph* complete_list);
 
 /*******************
  * Function Implementations
@@ -264,12 +124,14 @@ int* get_all_degrees(Graph* complete_list) {
     return degrees;
 }
 
-int insert_at_end_adj_list(Node** l, Graph** e) {
+int insert_at_end_adj_list(Node** l, Graph** e, int num) {
     Node* new_node, *current;
     new_node = allocate_node();
     if (new_node == NULL) return 0;
     new_node->pointed_letter = *e;
     new_node->adjacency_list = NULL;
+    new_node->weight=num;
+
     if (is_node_list_empty(*l)) {
         *l = new_node;
     } else {
@@ -287,10 +149,10 @@ void print_node(Node* list) {
     current = list;
     while (current != NULL) {
         if (current->adjacency_list == NULL) {
-            printf(" %c\n", current->pointed_letter->letter);
+            printf(" %c|%d \n", current->pointed_letter->letter, current->weight);
             current = current->adjacency_list;
         } else {
-            printf(" %c ->", current->pointed_letter->letter);
+            printf(" %c|%d ->", current->pointed_letter->letter, current->weight);
             current = current->adjacency_list;
         }
     }
