@@ -87,40 +87,44 @@ int dijkstra(int start, int end){
     visited[start] = 1; // close the start
 
     for(int i = current; i < num_vertices; i++){
-        printf("Current: %c\n", i+65);
+        //printf("Current: %c\n", i+65);
 
         int sh_path = MAX_INT;
-        int pos_sh_path;
-
+        
+        int pos_sh_path = i;
+        
         for(int j = 0; j < num_vertices; j++){
             
             if(adjacency_matrix_a[i][j] != 0){           
                 
                 if(visited['A' + j] == 0){
-                    final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j] + path_size;
+
+                    if(final_matrix[final_matrix_line_atu-1][j] > adjacency_matrix_a[i][j] + path_size || final_matrix[final_matrix_line_atu-1][j] == 0) 
+                        final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j] + path_size;
+                    else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; 
                  
-                    if(sh_path > final_matrix[final_matrix_line_atu][j] + path_size){
+                    if(sh_path > final_matrix[final_matrix_line_atu][j]){
                         pos_sh_path = j;
-                        sh_path = final_matrix[final_matrix_line_atu][j] + path_size;
+                        sh_path = final_matrix[final_matrix_line_atu][j];
                     }
                     
                 }else{
                     final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; // repeat the last value
                 }          
-            }
+            }else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j];
         }
 
-        printf("shortest_path: %d\n", sh_path);
-        printf("next_node: %c\n\n", pos_sh_path+65);
-
-        path_size += sh_path;
-        path[choice_atu++] = pos_sh_path+65;
+        // printf("shortest_path: %d\n", sh_path);
+        // printf("path: %d\n", path_size);
+        // printf("next_node: %c\n\n", pos_sh_path+65);
 
         if(i + 65 == end){
             printf("FOUND!\n");
+            path[choice_atu++] = i + 65;
             return path_size;
         }else if(num_visited == num_vertices) return 0;
-
+        else path_size = sh_path;
+        
         num_visited++;
         
         visited[pos_sh_path + 'A'] = 1; // close the shortest
@@ -128,8 +132,6 @@ int dijkstra(int start, int end){
         final_matrix_line_atu++;
         
     }
-
-    
 
     return 0;
 }

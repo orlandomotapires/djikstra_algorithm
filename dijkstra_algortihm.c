@@ -41,6 +41,12 @@ int main() {
     printf("\nFinal matrix: \n");
     print_final_matrix(final_matrix);
 
+    printf("\nPath from %c to %c: %d\n", letra_aleatoria_1, letra_aleatoria_2, path_size);
+    printf("Path: %c ", letra_aleatoria_1);
+    for(int i = 0; i < choice_atu-1; i++) printf("%c ", path[i]);
+
+    printf("\n");
+
     fclose(file_a);
 
     return 0;
