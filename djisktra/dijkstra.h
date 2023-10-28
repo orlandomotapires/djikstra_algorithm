@@ -1,5 +1,4 @@
 #include "graph.h"
-#include "stack.h"
 
 int num_vertices = 0;
 int path_size = 0;
@@ -75,8 +74,6 @@ void print_final_matrix(int matrix[50][50]) {
 int final_matrix_line_atu = 1;
 
 int dijkstra(int start, int end){
-    printf("\nStart: %c End: %c\n\n", start, end);
-
     memset(final_matrix, 0, sizeof(final_matrix));
     final_matrix[0][start-'A'] = 0; // path from start to start = 0
 
@@ -92,28 +89,22 @@ int dijkstra(int start, int end){
         
         for(int j = 0; j < num_vertices; j++){
             
-            if(adjacency_matrix_a[i][j] != 0){                      
-                if(visited['A' + j] == 0){
+            if(adjacency_matrix_a[i][j] != 0 && visited['A' + j] == 0){                             
+                
+                if(final_matrix[final_matrix_line_atu-1][j] > adjacency_matrix_a[i][j] + path_size || final_matrix[final_matrix_line_atu-1][j] == 0) 
+                    final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j] + path_size;
+                else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; 
+                
+                if(sh_path > final_matrix[final_matrix_line_atu][j]){
+                    pos_sh_path = j;
+                    sh_path = final_matrix[final_matrix_line_atu][j];
+                }                         
 
-                    if(final_matrix[final_matrix_line_atu-1][j] > adjacency_matrix_a[i][j] + path_size || final_matrix[final_matrix_line_atu-1][j] == 0) 
-                        final_matrix[final_matrix_line_atu][j] = adjacency_matrix_a[i][j] + path_size;
-                    else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; 
-                 
-                    if(sh_path > final_matrix[final_matrix_line_atu][j]){
-                        pos_sh_path = j;
-                        sh_path = final_matrix[final_matrix_line_atu][j];
-                    }
-                    
-                }else{
-                    final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j]; // repeat the last value
-                }          
             }else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j];
         }
 
-        if(i + 65 == end){
-            printf("FOUND!\n");
-            return 1;
-        }else if(num_visited == num_vertices) return 0;
+        if(i + 65 == end) return 1;
+        else if(num_visited == num_vertices) return 0;
         else path_size = sh_path;
         
         num_visited++;
@@ -131,11 +122,11 @@ void build_final_path(int start, int end){
     int atu = end - 65;
     path[choice_atu++] = end;
 
-    for(int i = final_matrix_line_atu; i > 0;){
+    for(int i = final_matrix_line_atu; i > 1;){
         if(final_matrix[i][atu] != final_matrix[i-1][atu]){
             int smaller = MAX_INT;
             for(int j = 0; j < num_vertices; j++){
-                if(final_matrix[i-1][j] <= smaller && final_matrix[i-1][j] != 0){              
+                if(final_matrix[i-1][j] < smaller && final_matrix[i-1][j] != 0){              
                     smaller = final_matrix[i-1][j];
                     atu = j;        
                 }

@@ -27,32 +27,31 @@ int main() {
 
     read_file_create_graph(&graph_a, file_a);
 
-    // Gere um número aleatório no intervalo de 1 a num_vertices para ser o no inicial
-    int letra_aleatoria_1 = (rand() % num_vertices) + 65;
-    
-    // Gere uma letra aleatório no intervalo de A a num_vertices para ser o no final
-    int letra_aleatoria_2 = (rand() % num_vertices) + 65;
+    int start = (rand() % num_vertices) + 65;
+    int end = (rand() % num_vertices) + 65;
 
     printf("Complete Graph: \n");
     print_complete_graph(graph_a);
 
-    int found = dijkstra(letra_aleatoria_1, letra_aleatoria_2);
+    printf("\nStart: %c End: %c\n\n", start, end);
+    int found = dijkstra(start, end);
 
     if(found){
+        printf("=-=-=-=-=-=-=-= Found! =-=-=-=-=-=-=-=\n");
 
-        build_final_path(letra_aleatoria_1, letra_aleatoria_2);
+        build_final_path(start, end);
 
         printf("\nFinal matrix: \n");
         print_final_matrix(final_matrix);
 
-        printf("\nDistance from %c to %c: %d\n", letra_aleatoria_1, letra_aleatoria_2, path_size);
+        printf("\nDistance from %c to %c: %d\n", start, end, path_size);
         printf("Path: ");
         for(int i = choice_atu-1; i >=0; i--) printf("%c ", path[i]);
         printf("\n");
 
-        fclose(file_a);
-
     }else printf("Not found!\n");
+
+    fclose(file_a);
 
     return 0;
 }
