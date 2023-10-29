@@ -100,7 +100,7 @@ int dijkstra(int start, int end){
                     sh_path = final_matrix[final_matrix_line_atu][j];
                 }                         
 
-            }else final_matrix[final_matrix_line_atu][j] = final_matrix[final_matrix_line_atu-1][j];
+            }else final_matrix[final_matrix_line_atu][j] = 0;
         }
 
         if(i + 65 == end) return 1;
@@ -120,9 +120,8 @@ int dijkstra(int start, int end){
 
 void build_final_path(int start, int end){
     int atu = end - 65;
-    path[choice_atu++] = end;
 
-    for(int i = final_matrix_line_atu; i > 1;){
+    for(int i = final_matrix_line_atu; i > 1; i--){
         if(final_matrix[i][atu] != final_matrix[i-1][atu]){
             int smaller = MAX_INT;
             for(int j = 0; j < num_vertices; j++){
@@ -132,8 +131,7 @@ void build_final_path(int start, int end){
                 }
             }
             path[choice_atu++] = atu+65;
-        }
-        i--;    
+        }     
     }
 
     path[choice_atu++] = start;

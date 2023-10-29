@@ -28,7 +28,7 @@ int main() {
     read_file_create_graph(&graph_a, file_a);
 
     int start = (rand() % num_vertices) + 65;
-    int end = (rand() % num_vertices) + 65;
+    int end = 75;
 
     printf("Complete Graph: \n");
     print_complete_graph(graph_a);
